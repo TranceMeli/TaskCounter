@@ -4,7 +4,10 @@
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-A minimal task counter app built with vanilla web technologies. Count tasks by
+<img width="800" alt="Bildschirmfoto_29-6-2026_205554_127 0 0 1" src="https://github.com/user-attachments/assets/f4e6b454-1845-4a67-b437-9375a32270e4" />
+
+
+A minimal task counter app built with vanilla web technologies.<br>Count tasks by
 drawing tally marks on a canvas or using the +/- buttons, then save them to
 named lists.
 
