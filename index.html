@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Counter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Task Counter</h1>
+        </div>
+        
+        <!-- Canvas Area -->
+        <div class="canvas-area">
+            <div class="count-display" id="current-count">0</div>
+            <canvas id="canvas" width="300" height="150"></canvas>
+        </div>
+        
+        <!-- Lists Area (rechte Seite) -->
+        <div class="lists-area">
+            <div class="lists-header">
+                <h2>Lists</h2>
+                <button class="btn-new-list" onclick="showNewListDialog()">+ New List</button>
+            </div>
+            
+            <!-- Liste aller Listen -->
+            <div id="lists-container">
+                <p class="empty-message">No lists yet. Create a new list!</p>
+            </div>
+        </div>
+        
+        <!-- Button Area -->
+        <div class="button-area">
+            <button class="btn-plus" onclick="addOne()">+</button>
+            <button class="btn-minus" onclick="minusOne()">-</button>
+            <button class="btn-reset" onclick="resetCounter()">Reset</button>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="input-area">
+            <input type="text" id="task-input" placeholder="Task to add...">
+            <select id="list-select">
+                <option value="">Select list...</option>
+            </select>
+            <button class="btn-add" id="taskBtn" onclick="addToList()">Add</button>
+        </div>
+    </div>
+    
+    <!-- Modal für neue Liste -->
+    <div id="new-list-modal" class="modal">
+        <div class="modal-content">
+            <h3>Create New List</h3>
+            <input type="text" id="new-list-name" placeholder="List name...">
+            <div class="modal-buttons">
+                <button onclick="createNewList()">Create</button>
+                <button onclick="closeNewListDialog()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
