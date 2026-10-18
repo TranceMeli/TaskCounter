@@ -1,0 +1,33 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.sqlite
+*.db
+*.log
+.env*
+*.env
+!.env.example
+!.env.*.example
+.venv/
+venv/
+
+# Secrets and local credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+secrets/
+credentials/
+
+# Node / Vite
+node_modules/
+dist/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
