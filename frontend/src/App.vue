@@ -421,6 +421,18 @@ async function confirmDelete() {
   background: var(--color-surface, #FFFFFF);
 }
 
+/* Child components bring their own card styling; the dashboard panel is the card. */
+.dashboard-panel > .panel,
+.dashboard-panel > .task-composer {
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+.dashboard-panel {
+  box-shadow: var(--shadow-card);
+}
+
 .counter-panel,
 .composer-panel,
 .lists-section,

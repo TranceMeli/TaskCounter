@@ -34,17 +34,17 @@ The application uses a **Vue 3 + Vite frontend** and a **Django REST Framework b
 - **Task management:** save, edit, and delete tasks; each task retains its count.
 - **Flexible units:** pick from common units, reveal the full unit list, or enter a custom unit. Units are shown with saved tasks.
 - **List defaults:** tasks can inherit the unit configured for their list, or use a unit specific to the task.
-- **Overview statistics:** see the number of lists, saved tasks, and total counts.
 - **Responsive interface:** the dashboard adapts to narrower screens, and typography scales fluidly with the viewport.
 - **API-backed persistence:** list and task data is stored by the Django backend in SQLite.
-- **Feedback and validation:** loading states, success/error messages, and form validation help make actions clear.
+- **Feedback and validation:** loading states, success/error messages, and form validation help make actions clear. If the API cannot be reached, the task list panel offers a **Try again** button.
+- **Readable color palette:** a navy/teal palette with text colors that meet WCAG AA contrast (at least 4.5:1) on every surface.
 
 ### Tech stack
 
 | Area | Technology |
 |---|---|
 | Frontend | Vue 3, JavaScript, Vite |
-| Styling | CSS, responsive layouts, fluid typography with `clamp()` |
+| Styling | CSS custom properties (color tokens in `frontend/src/assets/styles/main.css`), responsive layouts, fluid typography with `clamp()` |
 | Backend | Python, Django, Django REST Framework |
 | Database | SQLite |
 
@@ -57,6 +57,7 @@ TaskCounter/
 │   └── tasks/
 └── frontend/
     ├── src/
+    │   ├── assets/styles/
     │   ├── components/
     │   ├── composables/
     │   ├── constants/
@@ -81,7 +82,11 @@ python manage.py runserver
 
 The backend runs at `http://127.0.0.1:8001/` by default, and the API base URL is `http://127.0.0.1:8001/api/`. To use a different port for one run, pass it explicitly, for example `python manage.py runserver 8010`.
 
-> If the backend does not contain a `requirements.txt` file, install the project's Python dependencies using the dependency instructions in the repository before running the migration and server commands.
+Run the backend tests with:
+
+```powershell
+python manage.py test
+```
 
 #### 2. Start the frontend
 
@@ -94,6 +99,10 @@ npm run dev
 ```
 
 Open `http://127.0.0.1:5174/`. TaskCounter uses a fixed frontend port; if it is already in use, Vite exits with an error instead of silently switching to another port. Choose a different, project-specific port in `frontend/vite.config.js` if needed.
+
+The frontend talks to `http://127.0.0.1:8001/api` by default. To point it at another backend, set `VITE_API_BASE_URL` (for example in `frontend/.env.local`).
+
+Create a production build with `npm run build`.
 
 ### Units
 
@@ -121,17 +130,17 @@ Die Anwendung besteht aus einem **Vue-3-Frontend mit Vite** und einem **Backend 
 - **Aufgabenverwaltung:** Aufgaben speichern, bearbeiten und löschen; der Zählerstand wird pro Aufgabe gespeichert.
 - **Flexible Einheiten:** häufig verwendete Einheiten auswählen, die vollständige Liste einblenden oder eigene Einheiten eingeben. Die Einheiten werden bei gespeicherten Aufgaben angezeigt.
 - **Standard-Einheit pro Liste:** Aufgaben können die Standard-Einheit ihrer Liste übernehmen oder eine eigene Einheit verwenden.
-- **Übersichtsstatistiken:** Anzahl der Listen, gespeicherten Aufgaben und gesamten Zählerstände auf einen Blick.
 - **Responsives Design:** Das Dashboard passt sich schmaleren Bildschirmen an. Schriftgrößen skalieren fließend mit der verfügbaren Bildschirmbreite.
 - **Persistente Speicherung über die API:** Django speichert Listen und Aufgaben in SQLite.
-- **Rückmeldungen und Validierung:** Ladezustände, Erfolgs- und Fehlermeldungen sowie Formularprüfungen.
+- **Rückmeldungen und Validierung:** Ladezustände, Erfolgs- und Fehlermeldungen sowie Formularprüfungen. Ist die API nicht erreichbar, bietet die Listen-Box einen **Try again**-Button an.
+- **Gut lesbare Farbpalette:** eine Navy/Teal-Palette, deren Textfarben auf allen Flächen den WCAG-AA-Kontrast (mindestens 4,5:1) erfüllen.
 
 ### Technologien
 
 | Bereich | Technologie |
 |---|---|
 | Frontend | Vue 3, JavaScript, Vite |
-| Styling | CSS, responsives Layout, fließende Schriftgrößen mit `clamp()` |
+| Styling | CSS Custom Properties (Farb-Tokens in `frontend/src/assets/styles/main.css`), responsives Layout, fließende Schriftgrößen mit `clamp()` |
 | Backend | Python, Django, Django REST Framework |
 | Datenbank | SQLite |
 
@@ -144,6 +153,7 @@ TaskCounter/
 │   └── tasks/
 └── frontend/
     ├── src/
+    │   ├── assets/styles/
     │   ├── components/
     │   ├── composables/
     │   ├── constants/
@@ -168,7 +178,11 @@ python manage.py runserver
 
 Das Backend läuft standardmäßig unter `http://127.0.0.1:8001/`. Die API-Basisadresse ist `http://127.0.0.1:8001/api/`. Für einen anderen Port kannst du ihn beim Start ausdrücklich angeben, zum Beispiel mit `python manage.py runserver 8010`.
 
-> Falls keine `requirements.txt` vorhanden ist, installiere zuerst die Python-Abhängigkeiten entsprechend den Projektangaben.
+Die Backend-Tests startest du mit:
+
+```powershell
+python manage.py test
+```
 
 #### 2. Frontend starten
 
@@ -181,6 +195,10 @@ npm run dev
 ```
 
 Öffne anschließend `http://127.0.0.1:5174/`. TaskCounter verwendet einen festen Frontend-Port. Ist dieser bereits belegt, beendet sich Vite mit einer Fehlermeldung, statt unbemerkt auf einen anderen Port auszuweichen. Falls nötig, kannst du in `frontend/vite.config.js` einen anderen, für dieses Projekt eindeutigen Port festlegen.
+
+Das Frontend spricht standardmäßig mit `http://127.0.0.1:8001/api`. Für ein anderes Backend setzt du `VITE_API_BASE_URL` (zum Beispiel in `frontend/.env.local`).
+
+Einen Produktions-Build erstellst du mit `npm run build`.
 
 ### Einheiten auswählen
 

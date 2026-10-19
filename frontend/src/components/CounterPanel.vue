@@ -22,7 +22,7 @@ function setupCanvas() {
   canvas.height = Math.round(rect.height * dpr);
   context = canvas.getContext('2d');
   context.setTransform(dpr, 0, 0, dpr, 0, 0);
-  context.strokeStyle = '#1d4ed8';
+  context.strokeStyle = getComputedStyle(canvas).getPropertyValue('--color-primary').trim() || '#2F5FC9';
   context.lineWidth = 3;
   context.lineCap = 'round';
   context.lineJoin = 'round';
