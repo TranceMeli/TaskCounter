@@ -17,8 +17,7 @@ const {
   isSaving,
   errorMessage,
   statusMessage,
-  taskCount,
-  savedCount,
+  hasLoadError,
   refreshLists,
   createList,
   renameList,
@@ -291,6 +290,24 @@ async function confirmDelete() {
           <p>Loading your lists…</p>
         </div>
 
+        <!-- Load error -->
+        <div
+          v-else-if="hasLoadError && !lists.length"
+          class="empty-state"
+        >
+          <h3>Lists could not be loaded</h3>
+
+          <p>Check that the Django server is running, then try again.</p>
+
+          <button
+            class="button button-primary"
+            type="button"
+            @click="refreshLists()"
+          >
+            Try again
+          </button>
+        </div>
+
         <!-- Empty state -->
         <div
           v-else-if="!lists.length"
@@ -434,35 +451,6 @@ async function confirmDelete() {
   margin: 0.25rem 0 0.5rem;
   color: var(--color-text-primary, #121A42);
   font-size: 1.35rem;
-}
-
-.units-description,
-.units-help {
-  margin: 0;
-  color: var(--color-text-muted, #5C77A5);
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-.units-icon {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.75rem;
-  background: var(--color-surface-subtle, #D0E7E6);
-  color: var(--color-primary-dark, #293681);
-  font-size: 1.25rem;
-}
-
-.units-help {
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--color-border, #BCD9DF);
-}
-
-.units-help strong {
-  color: var(--color-text-secondary, #293681);
 }
 
 /* Tablet and mobile layout */

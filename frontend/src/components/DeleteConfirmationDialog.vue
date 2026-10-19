@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeUnmount, onMounted } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
   open: { type: Boolean, default: false },
@@ -9,6 +9,13 @@ const props = defineProps({
   isSaving: { type: Boolean, default: false },
 });
 const emit = defineEmits(['close', 'confirm']);
+const cancelButton = ref(null);
+
+watch(() => props.open, async (open) => {
+  if (!open) return;
+  await nextTick();
+  cancelButton.value?.focus();
+});
 
 function onKeydown(event) {
   if (props.open && event.key === 'Escape' && !props.isSaving) {
@@ -35,8 +42,8 @@ function onBackdrop(event) {
         <button
           class="button button-quiet"
           type="button"
+          ref="cancelButton"
           :disabled="isSaving"
-          autofocus
           @click="emit('close')"
         >
           Cancel

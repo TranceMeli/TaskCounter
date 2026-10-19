@@ -8,6 +8,7 @@ export function useTaskCounter() {
   const isSaving = ref(false);
   const errorMessage = ref('');
   const statusMessage = ref('');
+  const hasLoadError = ref(false);
 
   const taskCount = computed(() =>
     lists.value.reduce(
@@ -40,8 +41,10 @@ export function useTaskCounter() {
 
     try {
       lists.value = await taskCounterApi.getLists();
+      hasLoadError.value = false;
     } catch (error) {
       errorMessage.value = getApiError(error);
+      hasLoadError.value = true;
     } finally {
       if (!quiet) isLoading.value = false;
     }
@@ -109,6 +112,7 @@ export function useTaskCounter() {
     isSaving,
     errorMessage,
     statusMessage,
+    hasLoadError,
     taskCount,
     savedCount,
     refreshLists,

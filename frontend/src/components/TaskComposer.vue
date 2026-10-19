@@ -36,6 +36,21 @@ const validationMessage = ref('');
 
 const isEditing = computed(() => props.editingTask !== null);
 
+function ensureValidListSelection(lists) {
+  if (!lists.length) {
+    selectedListId.value = '';
+    return;
+  }
+
+  const selectedListExists = lists.some(
+    (list) => String(list.id) === selectedListId.value,
+  );
+
+  if (!selectedListExists) {
+    selectedListId.value = String(lists[0].id);
+  }
+}
+
 watch(
   () => props.editingTask,
   (task) => {
@@ -48,7 +63,8 @@ watch(
       emit('update:unit', task.unit ?? '');
     } else {
       name.value = '';
-      selectedListId.value = '';
+      // Keep the current list selected so consecutive saves go to the same list.
+      ensureValidListSelection(props.lists);
       emit('update:unit', '');
     }
 
@@ -57,24 +73,7 @@ watch(
   { immediate: true },
 );
 
-watch(
-  () => props.lists,
-  (lists) => {
-    if (!lists.length) {
-      selectedListId.value = '';
-      return;
-    }
-
-    const selectedListExists = lists.some(
-      (list) => String(list.id) === selectedListId.value,
-    );
-
-    if (!selectedListExists) {
-      selectedListId.value = String(lists[0].id);
-    }
-  },
-  { immediate: true },
-);
+watch(() => props.lists, ensureValidListSelection, { immediate: true });
 
 function submit() {
   validationMessage.value = '';

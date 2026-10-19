@@ -27,6 +27,9 @@ const customInputId = useId();
 const showAllUnits = ref(false);
 const customMode = ref(false);
 const customValue = ref("");
+// Last value emitted from the custom input; used to tell our own updates
+// apart from changes made by the parent.
+let lastCustomEmit = null;
 
 const availableUnits = computed(() =>
   props.allowDefault
@@ -42,7 +45,6 @@ const quickUnitValues = [
   "l",
   "ml",
   "Stunden",
-  "Portionen",
 ];
 
 const quickUnits = computed(() => {
@@ -76,10 +78,13 @@ const isKnownUnit = computed(() =>
 watch(
   () => props.modelValue,
   (value) => {
-    customMode.value =
-      value !== "" &&
-      !availableUnits.value.some((unit) => unit.value === value);
+    // Typing in the custom field must not close it, even when the text is
+    // cleared or matches a predefined unit.
+    const isOwnCustomUpdate = customMode.value && value === lastCustomEmit;
+    lastCustomEmit = null;
+    if (isOwnCustomUpdate) return;
 
+    customMode.value = value !== "" && !isKnownUnit.value;
     customValue.value = customMode.value ? value : "";
   },
   { immediate: true }
@@ -100,7 +105,8 @@ function openCustomUnit() {
 }
 
 function updateCustomUnit() {
-  emit("update:modelValue", customValue.value.trim());
+  lastCustomEmit = customValue.value.trim();
+  emit("update:modelValue", lastCustomEmit);
 }
 
 function chooseFromList() {

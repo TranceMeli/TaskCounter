@@ -16,20 +16,19 @@ export const taskCounterApi = {
     return data;
   },
 
-
   async deleteList(id) {
     await api.delete(`/lists/${id}/`);
   },
-async createTask(payload) {
-  try {
-    const response = await api.post('/tasks/', payload);
-    return response.data;
-  } catch (error) {
-    console.error('Task creation failed:', error.response?.data);
-    console.error('Submitted payload:', payload);
-    throw error;
-  }
-},
+
+  async createTask({ task_list, name, count, unit }) {
+    const { data } = await api.post('/tasks/', {
+      task_list,
+      name,
+      count,
+      unit,
+    });
+    return data;
+  },
 
   async updateTask(id, { task_list, name, count, unit }) {
     const { data } = await api.patch(`/tasks/${id}/`, {

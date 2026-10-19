@@ -76,3 +76,15 @@ class TaskCounterApiTests(APITestCase):
         response = self.client.delete(f'/api/lists/{task_list.id}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Task.objects.filter(id=task.id).exists())
+
+    def test_list_endpoint_does_not_query_per_task(self):
+        for index in range(3):
+            task_list = TaskList.objects.create(name=f'List {index}')
+            for task_index in range(3):
+                Task.objects.create(task_list=task_list, name=f'Task {task_index}')
+
+        # One query for the lists, one for the prefetched tasks.
+        with self.assertNumQueries(2):
+            response = self.client.get('/api/lists/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]['tasks'][0]['effective_unit'], 'Stück')

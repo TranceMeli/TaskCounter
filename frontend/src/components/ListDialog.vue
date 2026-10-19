@@ -1,5 +1,5 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
   open: { type: Boolean, default: false },
@@ -9,11 +9,14 @@ const props = defineProps({
 const emit = defineEmits(['close', 'submit']);
 const name = ref('');
 const validationMessage = ref('');
+const nameInput = ref(null);
 
-watch(() => [props.open, props.listToRename], ([open, list]) => {
+watch(() => [props.open, props.listToRename], async ([open, list]) => {
   if (open) {
     name.value = list?.name ?? '';
     validationMessage.value = '';
+    await nextTick();
+    nameInput.value?.focus();
   }
 });
 
@@ -40,7 +43,7 @@ function submit() {
 }
 
 function onBackdrop(event) {
-  if (event.target === event.currentTarget) emit('close');
+  if (event.target === event.currentTarget && !props.isSaving) emit('close');
 }
 </script>
 
@@ -51,7 +54,7 @@ function onBackdrop(event) {
       <form @submit.prevent="submit">
         <label class="field-group">
           <span>List name</span>
-          <input v-model="name" maxlength="100" autofocus type="text" placeholder="e.g. Everyday routines" />
+          <input ref="nameInput" v-model="name" maxlength="100" type="text" placeholder="e.g. Everyday routines" />
         </label>
         <p v-if="validationMessage" class="inline-error" role="alert">{{ validationMessage }}</p>
         <div class="modal-actions">
